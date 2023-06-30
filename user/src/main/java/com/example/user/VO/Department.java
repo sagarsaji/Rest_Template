@@ -12,8 +12,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Department {
-//    @Id
-//    @GeneratedValue
     private int did;
     private String dname;
     private String dcode;

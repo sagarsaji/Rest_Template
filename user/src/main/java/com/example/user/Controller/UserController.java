@@ -51,6 +51,28 @@ public class UserController {
         return ResponseEntity.ok(dep);
     }
 
+    @PutMapping("/update/{uid}")
+    public ResponseEntity<ResponseTemplateVO> updateDeptByUser(@PathVariable int uid,@RequestBody Department dept){
+        User u = null;
+        ResponseTemplateVO vo = new ResponseTemplateVO();
+        Optional<User> op = repo.findById(uid);
+        if(op.isPresent()){
+            u = op.get();
+            int d = u.getDid();
+            restTemplate.put("http://localhost:8081/department/{did}",dept,d,Department.class);
+            vo.setUser(op.get());
+            vo.setDepartment(dept);
+            return ResponseEntity.ok(vo);
+        }
+        else return null;
+    }
+
+    @PostMapping("/addDept")
+    public ResponseEntity<Department> addDepartment(@RequestBody Department dept){
+        restTemplate.postForEntity("http://localhost:8081/department/submit",dept,Department.class);
+        return ResponseEntity.ok(dept);
+    }
+
     @DeleteMapping("/{did}")
     public ResponseEntity<String> deleteByDid(@PathVariable int did){
         restTemplate.delete("http://localhost:8081/department/{did}",did);
